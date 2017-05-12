@@ -1,20 +1,27 @@
 import Express from 'express';
+import mongoose from 'mongoose';
 import config from 'config';
 import bodyParser from 'body-parser';
+import * as db from './src/lib/db';
 
 const app = Express();
 const port = process.env.PORT || config.http.port;
+const conn = mongoose.connection;
 
 // Setting default port
 app.set('port', port);
 
 // Setting server configurations
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-app.listen(app.get('port'), err => {
-  if (err)
-    return console.log(`Server error: ${err}`);
+db.connectdb();
 
-  console.log(`Server up, port: ${port}`);
-});
+conn.on('open', () => {
+  app.listen(app.get('port'), (err) => {
+    if (err) { return console.log(`Server error: ${err}`); }
+
+    console.log(`Server up, port: ${port}`);
+  });
+})
+.on('error', err => console.log(`Error on connecting to database: ${err}`));

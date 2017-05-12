@@ -1,0 +1,16 @@
+{
+  "http": {
+    "port": 3000,
+    "host": "localhost"
+  },
+  "db": {
+    "name": "balanc3",
+    "host": "localhost",
+    "user": "root",
+    "pass": "admin",
+    "port": 27017
+  },
+  "apis": {
+
+  }
+}

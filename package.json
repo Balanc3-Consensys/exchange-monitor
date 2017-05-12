@@ -4,9 +4,12 @@
   "description": "A service to get exchange prices and store on our database, associating with a block",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development ./node_modules/.bin/nodemon index.js --exec ./node_modules/.bin/babel-node --presets es2017,stage-2",
+    "start": "NODE_ENV=development ./node_modules/.bin/nodemon --exec ./node_modules/.bin/babel-node index.js",
     "build": "babel lib -d dist",
     "prod": "NODE_ENV=production node dist/index.js"
+  },
+  "repository": {
+    "url": "https://github.com/Balanc3-Consensys/exchange-monitor"
   },
   "author": "Marcio Mansur",
   "license": "ISC",
@@ -16,10 +19,12 @@
     "express": "^4.15.2",
     "mongoose": "^4.9.8",
     "mongoose-long": "^0.1.1",
+    "poloniex-api-node": "^1.1.1",
     "request-promise": "^4.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.24.1",
