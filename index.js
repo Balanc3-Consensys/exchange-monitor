@@ -4,6 +4,8 @@ import config from 'config';
 import bodyParser from 'body-parser';
 import * as db from './src/lib/db';
 
+import prices from './src/scraping';
+
 const app = Express();
 const port = process.env.PORT || config.http.port;
 const conn = mongoose.connection;
@@ -18,10 +20,11 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 db.connectdb();
 
 conn.on('open', () => {
-  app.listen(app.get('port'), (err) => {
+  app.listen(app.get('port'), async (err) => {
     if (err) { return console.log(`Server error: ${err}`); }
-
+    await prices();
     console.log(`Server up, port: ${port}`);
+    return 0;
   });
 })
 .on('error', err => console.log(`Error on connecting to database: ${err}`));
