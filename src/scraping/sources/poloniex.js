@@ -1,7 +1,7 @@
 import request from 'request-promise';
 import config from 'config';
 
-export default async function () {
+module.exports = async () => {
   try {
     const options = {
       url: `${config.apis.poloniex}/public`,
@@ -15,4 +15,4 @@ export default async function () {
   } catch (e) {
     return e;
   }
-}
+};

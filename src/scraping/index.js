@@ -1,9 +1,23 @@
-import PricePerSecond from '../models/pricePerSecond';
+import parallel from 'async/parallel';
 
-// Load Sources
+// Load resources
 import poloniex from './sources/poloniex';
 
 export default async function savePriceData() {
-  const test = await poloniex();
-  console.log(test);
+  parallel({
+    poloniex: async (cb) => {
+      const assets = await poloniex();
+
+      assets.forEach(async (asset) => {
+        const exchange = {
+
+        };
+      });
+    },
+    kraken: async (cb) => {
+
+    }
+  }, (err, res) => {
+    console.log('success!');
+  });
 }

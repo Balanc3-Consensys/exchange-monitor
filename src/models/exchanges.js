@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import priceSchema from './prices';
 
 const Schema = mongoose.Schema;
 
@@ -8,13 +9,8 @@ const exchangeSchema = new Schema({
     index: true,
     lowerCase: true
   },
-  last: { type: Number, min: 0, index: true },
-  lowest: { type: Number, min: 0, index: true },
-  highest: { type: Number, min: 0, index: true },
-  percentageChange: { type: Number, min: 0, index: true },
-  volume: { type: Number, min: 0, index: true },
-  lowestDay: { type: Number, min: 0, index: true },
-  highestDay: { type: Number, min: 0, index: true }
+  timestampMinute: { type: Date, default: Date.now },
+  prices: [priceSchema]
 });
 
 export default exchangeSchema;

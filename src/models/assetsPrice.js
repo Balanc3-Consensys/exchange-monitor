@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
-import exchangesSchema from './exchanges';
+import exchangeSchema from './exchanges';
 
 const Schema = mongoose.Schema;
 
-const PricePerSecondSchema = new Schema({
+const AssetsPriceSchema = new Schema({
   timeStamps: { type: Date, default: Date.now },
   fromAsset: { type: String, index: true },
   toAsset: { type: String, index: true },
-  exchanges: exchangesSchema
+  exchanges: [exchangeSchema]
 });
 
-export default mongoose.model('PricePerSecond', PricePerSecondSchema);
+export default mongoose.model('AssetsPrice', AssetsPriceSchema);
