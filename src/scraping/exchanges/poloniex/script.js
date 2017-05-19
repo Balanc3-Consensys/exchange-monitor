@@ -15,41 +15,50 @@ export default async () => {
 
     _.forEach(assets, async (v, k) => {
       let price = await AssetsPrices.findOne({
-        timestampHour: moment().format('YYYY-MM-DDThh:00:00')
+        timestampHour: moment().startOf('hour').toDate()
       });
 
       const i = k.indexOf('_');
 
       if (!price) {
         price = new AssetsPrices({
-          timestampHour: moment().format('YYYY-MM-DDThh:00:00'),
+          timestampHour: moment().startOf('hour').toDate(),
           fromAsset: k.substring(0, i),
           toAsset: k.substring(i + 1),
           exchangeName: 'poloniex'
         });
       }
       let minute = price.minutes.find(o =>
-        o.timestampMinute === moment().format('YYYY-MM-DDThh:mm:00')
+        moment(o.timestampMinute).isSame(moment().startOf('minute').toDate())
       );
 
       // check if minute doesn't exists
       if (!minute) {
         price.minutes.push({
-          timestampMinute: moment().format('YYYY-MM-DDThh:mm:00')
+          timestampMinute: moment().startOf('minute').toDate()
         });
         minute = price.minutes.find(o =>
-          o.timestampMinute === moment().format('YYYY-MM-DDThh:mm:00')
+          moment(o.timestampMinute).isSame(moment().startOf('minute').toDate())
         );
-        console.log(minute);
       }
 
-      // const second = price.minutes.prices.find(o =>
-      //   o.timestampSecond === moment().format('YYYY-MM-DDThh:mm:ss')
-      // );
+      const subdoc = price.minutes.id(minute.id);
 
-      // console.log(price.minutes);
-      // return price.save();
+      subdoc.prices.push({
+        timestamp: moment().toDate(),
+        last: v.last,
+        lowest: v.lowestAsk,
+        highest: v.highestBid,
+        percentageChange: v.percentageChange,
+        volume: v.baseVolume,
+        lowestDay: v.low24h,
+        highestDay: v.high24h
+      });
+
+      price.save();
     });
+
+    return true;
   } catch (e) {
     return e;
   }
