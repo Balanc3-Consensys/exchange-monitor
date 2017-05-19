@@ -3,14 +3,9 @@ import priceSchema from './prices';
 
 const Schema = mongoose.Schema;
 
-const exchangeSchema = new Schema({
-  name: {
-    type: String,
-    index: true,
-    lowerCase: true
-  },
+const minuteSchema = new Schema({
   timestampMinute: { type: Date, default: Date.now },
   prices: [priceSchema]
 });
 
-export default exchangeSchema;
+export default minuteSchema;

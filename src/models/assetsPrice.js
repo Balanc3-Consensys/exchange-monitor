@@ -1,13 +1,14 @@
 import mongoose from 'mongoose';
-import exchangeSchema from './exchanges';
+import minuteSchema from './minutes';
 
 const Schema = mongoose.Schema;
 
 const AssetsPriceSchema = new Schema({
-  timeStamps: { type: Date, default: Date.now },
+  timestampHour: { type: Date, default: Date.now },
   fromAsset: { type: String, index: true },
   toAsset: { type: String, index: true },
-  exchanges: [exchangeSchema]
+  exchangeName: { type: String, index: true },
+  minutes: [minuteSchema]
 });
 
 export default mongoose.model('AssetsPrice', AssetsPriceSchema);
