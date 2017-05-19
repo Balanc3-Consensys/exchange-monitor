@@ -7,12 +7,11 @@ import poloScript from './exchanges/poloniex/script';
 export default async function savePriceData() {
   parallel({
     poloniex: async (cb) => {
-      const result = await poloScript();
-
-      if (result) {
+      try {
+        await poloScript();
         cb(null, `Got data from poloniex, at ${moment().format('MM/DD/YYYY HH:mm:ss')}`);
-      } else {
-        cb(`Error at scraper: ${result}`);
+      } catch (e) {
+        cb(`Error at scraper: ${e}`, null);
       }
     }
   }, (err, res) => {
