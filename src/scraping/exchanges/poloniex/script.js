@@ -1,5 +1,5 @@
-import moment from 'moment';
 import _ from 'lodash';
+import moment from 'moment';
 
 // Load database models
 import AssetsPrices from '../../../models/assetsPrice';
@@ -14,48 +14,47 @@ export default async () => {
     const assets = await source();
 
     _.forEach(assets, async (v, k) => {
-      let price = await AssetsPrices.findOne({
-        timestampHour: moment().startOf('hour').toDate()
-      });
-
       const i = k.indexOf('_');
 
-      if (!price) {
-        price = new AssetsPrices({
-          timestampHour: moment().startOf('hour').toDate(),
-          fromAsset: k.substring(0, i),
-          toAsset: k.substring(i + 1),
-          exchangeName: 'poloniex'
-        });
-      }
-      let minute = price.minutes.find(o =>
-        moment(o.timestampMinute).isSame(moment().startOf('minute').toDate())
-      );
-
-      // check if minute doesn't exists
-      if (!minute) {
-        price.minutes.push({
-          timestampMinute: moment().startOf('minute').toDate()
-        });
-        minute = price.minutes.find(o =>
-          moment(o.timestampMinute).isSame(moment().startOf('minute').toDate())
-        );
-      }
-
-      const subdoc = price.minutes.id(minute.id);
-
-      subdoc.prices.push({
-        timestamp: moment().toDate(),
-        last: v.last,
-        lowest: v.lowestAsk,
-        highest: v.highestBid,
-        percentageChange: v.percentageChange,
-        volume: v.baseVolume,
-        lowestDay: v.low24h,
-        highestDay: v.high24h
+      let asset = await AssetsPrices.findOne({
+        fromAsset: k.substring(0, i),
+        toAsset: k.substring(i + 1)
       });
 
-      price.save();
+      if (!asset) {
+        asset = new AssetsPrices({
+          fromAsset: k.substring(0, i),
+          toAsset: k.substring(i + 1),
+          timestamp: moment().toDate()
+        });
+      }
+
+      let exchange = asset.exchanges.find(o => o.name === 'poloniex');
+
+      if (!exchange) {
+        asset.exchanges.push({
+          name: 'poloniex'
+        });
+        exchange = asset.exchanges.find(o => o.name === 'poloniex');
+      }
+
+      const subdoc = asset.exchanges.id(exchange.id);
+      const price = subdoc.prices.find(o =>
+        moment(o.timestampMinute).isSame(moment().toDate())
+      );
+
+      if (!price) {
+        subdoc.prices.push({
+          timestamp: moment().toDate(),
+          last: Number(v.last),
+          lowest: Number(v.lowestAsk),
+          highest: Number(v.highestBid),
+          percentageChange: v.percentageChange,
+          volume: Number(v.baseVolume)
+        });
+      }
+
+      asset.save();
     });
 
     return true;

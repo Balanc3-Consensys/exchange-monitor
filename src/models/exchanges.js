@@ -5,7 +5,8 @@ const Schema = mongoose.Schema;
 
 const exchangeSchema = new Schema({
   name: { type: String, index: true },
-  prices: [priceSchema]
+  prices: [priceSchema],
+  timestamps: { type: Date, default: Date.now }
 });
 
 export default exchangeSchema;
