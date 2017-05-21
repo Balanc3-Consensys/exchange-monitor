@@ -43,16 +43,14 @@ export default async () => {
         moment(o.timestampMinute).isSame(moment().toDate())
       );
 
-      if (!price) {
-        subdoc.prices.push({
-          timestamp: moment().toDate(),
-          last: Number(v.last),
-          lowest: Number(v.lowestAsk),
-          highest: Number(v.highestBid),
-          percentageChange: v.percentageChange,
-          volume: Number(v.baseVolume)
-        });
-      }
+      subdoc.prices.push({
+        timestamp: moment().toDate(),
+        last: Number(v.last),
+        lowest: Number(v.lowestAsk),
+        highest: Number(v.highestBid),
+        percentageChange: v.percentageChange,
+        volume: Number(v.baseVolume)
+      });
 
       asset.save();
     });
