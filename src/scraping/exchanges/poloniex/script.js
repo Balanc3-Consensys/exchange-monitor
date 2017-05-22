@@ -17,14 +17,14 @@ export default async () => {
       const i = k.indexOf('_');
 
       let asset = await AssetsPrices.findOne({
-        fromAsset: k.substring(0, i),
-        toAsset: k.substring(i + 1)
+        base: k.substring(0, i),
+        quote: k.substring(i + 1)
       });
 
       if (!asset) {
         asset = new AssetsPrices({
-          fromAsset: k.substring(0, i),
-          toAsset: k.substring(i + 1),
+          base: k.substring(0, i),
+          quote: k.substring(i + 1),
           timestamp: moment().toDate()
         });
       }
@@ -39,9 +39,6 @@ export default async () => {
       }
 
       const subdoc = asset.exchanges.id(exchange.id);
-      const price = subdoc.prices.find(o =>
-        moment(o.timestampMinute).isSame(moment().toDate())
-      );
 
       subdoc.prices.push({
         timestamp: moment().toDate(),
@@ -49,7 +46,8 @@ export default async () => {
         lowest: Number(v.lowestAsk),
         highest: Number(v.highestBid),
         percentageChange: v.percentageChange,
-        volume: Number(v.baseVolume)
+        baseVolume: Number(v.baseVolume),
+        quoteVolume: Number(v.quoteVolume)
       });
 
       asset.save();

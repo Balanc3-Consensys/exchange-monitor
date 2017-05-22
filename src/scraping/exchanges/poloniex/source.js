@@ -13,6 +13,6 @@ export default async () => {
 
     return await request(options);
   } catch (e) {
-    return e;
+    throw e;
   }
 };

@@ -11,6 +11,7 @@
     "port": 27017
   },
   "apis": {
-
+    "poloniex": "https://poloniex.com/",
+    "kraken": "https://api.kraken.com/0/"
   }
 }
