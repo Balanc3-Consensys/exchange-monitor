@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import config from 'config';
 import bodyParser from 'body-parser';
 import * as db from './src/lib/db';
-import cron from './src/lib/cronjobs';
+// import cron from './src/lib/cronjobs';
 
 const app = Express();
 const port = process.env.PORT || config.http.port;

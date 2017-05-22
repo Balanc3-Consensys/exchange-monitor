@@ -11,28 +11,35 @@ export default async () => {
 
     const pairs = await request(pairHeader);
 
-    return _.map(pairs.result, async (v, k) => {
+    const data = _.map(pairs.result, async (v, k) => {
       const assetHeader = {
         url: `${config.apis.kraken}/public/Ticker`,
         qs: { pair: k },
         json: true
       };
 
-      const data = await request(assetHeader);
-      const asset = data.result[k];
+      const req = await request(assetHeader);
+      const asset = req.result[k];
 
-      return {
-        base: v.base,
-        quote: v.quote,
-        last: asset.c[0],
-        lowest: asset.l[0],
-        highest: asset.h[0],
-        lowest24h: asset.l[1],
-        highest24h: asset.h[1],
-        baseVolume: asset.v[0],
-        quoteVolume: asset.p[0]
-      };
+      if (asset) {
+        return {
+          base: v.base,
+          quote: v.quote,
+          altname: v.altname,
+          last: asset.c[0],
+          lowest: asset.l[0],
+          highest: asset.h[0],
+          lowest24h: asset.l[1],
+          highest24h: asset.h[1],
+          baseVolume: asset.v[0],
+          quoteVolume: asset.p[0]
+        };
+      }
     });
+
+    return Promise.all(data)
+      .then(d => d)
+      .catch((e) => { throw e; });
   } catch (e) {
     throw e;
   }
