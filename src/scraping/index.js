@@ -4,12 +4,21 @@ import _ from 'lodash';
 
 // Load scrapping scripts
 import poloScript from './exchanges/poloniex/script';
+import krakenScript from './exchanges/kraken/script';
 
 export default async function savePriceData() {
   parallel({
     poloniex: async (cb) => {
       try {
         await poloScript();
+        cb(null, true);
+      } catch (e) {
+        cb(`Error at scraper: ${e}`, null);
+      }
+    },
+    kraken: async (cb) => {
+      try {
+        await krakenScript();
         cb(null, true);
       } catch (e) {
         cb(`Error at scraper: ${e}`, null);
