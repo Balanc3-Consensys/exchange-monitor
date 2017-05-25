@@ -9,7 +9,6 @@ const priceSchema = new Schema({
   lowest24h: { type: Number, min: 0, index: true },
   highest24h: { type: Number, min: 0, index: true },
   percentageChange: { type: Number, min: 0, index: true },
-  baseVolume: { type: Number, min: 0, index: true },
   quoteVolume: { type: Number, min: 0, index: true },
   timestamps: { type: Date, default: Date.now }
 });
