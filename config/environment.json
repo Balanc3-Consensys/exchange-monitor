@@ -1,0 +1,34 @@
+{
+  "http": {
+    "port": 3000,
+    "host": "localhost"
+  },
+  "db": {
+    "name": "balanc3",
+    "host": "localhost",
+    "user": "root",
+    "pass": "admin",
+    "port": 27017
+  },
+  "exchanges": {
+    "poloniex": {
+      "api": "https://poloniex.com/",
+      "ws": "wss://api.poloniex.com"
+    },
+    "kraken": {
+      "api": "https://api.kraken.com/0/"
+    },
+    "bitfinex": {
+      "api": "https://api.bitfinex.com/v1",
+      "ws": "wss://api.bitfinex.com/ws/"
+    },
+    "xbtc-e": {
+      "api": "",
+      "ws": ""
+    },
+    "gdax": {
+      "api": "https://api.gdax.com/",
+      "ws": "wss://ws-feed.gdax.com/"
+    }
+  }
+}

@@ -4,7 +4,6 @@ import config from 'config';
 import bodyParser from 'body-parser';
 import * as db from './src/lib/db';
 // import cron from './src/lib/cronjobs';
-import socket from './src/scraping/exchanges/poloniex/socket';
 
 const app = Express();
 const port = process.env.PORT || config.http.port;

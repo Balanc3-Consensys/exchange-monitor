@@ -16,6 +16,7 @@
   "dependencies": {
     "async": "^2.4.0",
     "autobahn": "^17.5.2",
+    "bitfinex-api-node": "^1.0.0",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "config": "^1.26.1",
