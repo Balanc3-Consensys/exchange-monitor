@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import config from 'config';
 import bodyParser from 'body-parser';
 import * as db from './src/lib/db';
-// import cron from './src/lib/cronjobs';
+import scraper from './src/scraping';
 
 const app = Express();
 const port = process.env.PORT || config.http.port;
@@ -22,6 +22,7 @@ conn.on('open', () => {
   app.listen(app.get('port'), async (err) => {
     if (err) { return console.log(`Server error: ${err}`); }
     console.log(`Server up, port: ${port}`);
+    scraper();
     return 0;
   });
 })

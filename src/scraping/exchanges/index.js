@@ -1,4 +1,3 @@
-import request from 'request-promise';
 import moment from 'moment';
 
 import Asset from '../../models/assets';

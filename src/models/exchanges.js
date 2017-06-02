@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 const exchangeSchema = new Schema({
   name: { type: String, index: true },
-  price: [priceSchema]
+  prices: [priceSchema]
 });
 
 export default exchangeSchema;

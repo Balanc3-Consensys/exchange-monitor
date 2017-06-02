@@ -1,5 +1,8 @@
 import BitfinexWS from 'bitfinex-api-node';
 
+// exchange lib
+import * as lib from '../';
+
 const wss = new BitfinexWS().ws;
 
 wss.on('open', () => {
@@ -24,12 +27,24 @@ wss.on('open', () => {
   );
 });
 
-wss.on('ticker', (pair, ticker) => {
-  console.log(pair, ticker);
-});
+wss.on('ticker', async (pair, ticker) => {
+  try {
+    const obj = {
+      pair,
+      last: ticker.lastPrice,
+      lowestAsk: ticker.ask,
+      highestBid: ticker.bid,
+      percentageChange: ticker.dailyChangePerc,
+      highest24h: ticker.high,
+      lowest24h: ticker.low,
+      volume: ticker.volume
+    };
 
-wss.on('subscribed', (data) => {
-  console.log('New subscription', data);
+    await lib.save(obj, 'bitfinex');
+    console.log('log bitfinex');
+  } catch (e) {
+    console.error(e);
+  }
 });
 
 wss.on('error', console.error);

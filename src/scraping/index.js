@@ -1,33 +1,26 @@
 import parallel from 'async/parallel';
-import moment from 'moment';
-import _ from 'lodash';
 
-// Load scrapping scripts
-import poloScript from './exchanges/poloniex/script';
-import krakenScript from './exchanges/kraken/script';
+// Connect to websockets
+import socketPoloniex from './exchanges/poloniex/socket';
+import socketBitfinex from './exchanges/bitfinex/socket';
 
-export default async function savePriceData() {
+// Load eventloops (historical data)
+
+export default async function scraper() {
   parallel({
-    poloniex: async (cb) => {
+    poloniex: async () => {
       try {
-        await poloScript();
-        cb(null, true);
+
       } catch (e) {
-        cb(`Error at scraper: ${e}`, null);
+        console.error(`Error at scraper: ${e}`);
       }
     },
-    kraken: async (cb) => {
+    bitfinex: async () => {
       try {
-        await krakenScript();
-        cb(null, true);
+
       } catch (e) {
-        cb(`Error at scraper: ${e}`, null);
+        console.error(`Error at scraper: ${e}`);
       }
     }
-  }, (err, res) => {
-    if (err) { console.log(err); }
-    _.forEach(res, (v, k) => {
-      console.log(`Got ticker from ${k} at ${moment().format('MM/DD/YYYY HH:mm:ss')}`);
-    });
   });
 }
